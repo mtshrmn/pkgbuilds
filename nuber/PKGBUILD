@@ -1,0 +1,30 @@
+pkgname=nuber
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="epub terminal reader with inline images"
+arch=('x86_64')
+url="https://github.com/mtshrmn/nuber"
+license=('GPL3')
+depends=('ncurses' 'python' 'ueberzug')
+makedepends=('rust' 'maturin' 'git' 'python-pip')
+provides=("${pkgname}")
+conflicts=("${pkgname}")
+source=('nuber'::'git+https://github.com/mtshrmn/nuber.git')
+md5sums=('SKIP')
+
+prepare() {
+    cd "${srcdir}/${pkgname}"
+    git submodule update --init --recursive
+    cd rust-html2text
+    git apply ../html2text.patch
+}
+
+build() {
+    cd "${srcdir}/${pkgname}"
+    maturin build --release
+}
+
+package() {
+    cd "${srcdir}/${pkgname}"
+    pip install .
+}

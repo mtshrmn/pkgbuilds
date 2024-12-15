@@ -1,0 +1,16 @@
+# Maintainer: Moshe Sherman <mtshrmn@gmail.com>
+pkgname=nyaflix-git
+pkgver=1.0.0  # Replace with the script version if it's versioned
+pkgrel=1
+pkgdesc="Stream anime from the terminal"
+arch=('x86_64' 'aarch64')  # Supported architectures
+url="https://gist.github.com/mtshrmn/4c418ac5f6a3806acfb83e6ede0900b4"
+license=('GPL3')
+depends=('mpv' 'fzf' 'parallel' 'curl' 'lynx' 'peerflix')
+optdepends=('vlc: For streaming with VLC instead of MPV')
+source=("https://gist.githubusercontent.com/mtshrmn/4c418ac5f6a3806acfb83e6ede0900b4/raw/a5091804c136116b2d0a62263f3897b94b21732f/nyaflix.sh")
+sha256sums=('ed5c9f9dd040eb0cfe3aa18136fc92e1b5b2226f4c62d7057bb99c0d5972b9cb')
+
+package() {
+    install -Dm755 "$srcdir/nyaflix.sh" "$pkgdir/usr/bin/nyaflix"
+}
