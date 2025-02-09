@@ -1,16 +1,27 @@
 # Maintainer: Moshe Sherman <mtshrmn@gmail.com>
-pkgname=nyaflix-git
-pkgver=1.0.0  # Replace with the script version if it's versioned
+pkgname=nyaflix
+pkgver="1.0"
 pkgrel=1
-pkgdesc="Stream anime from the terminal"
-arch=('x86_64' 'aarch64')  # Supported architectures
-url="https://gist.github.com/mtshrmn/4c418ac5f6a3806acfb83e6ede0900b4"
-license=('GPL3')
-depends=('mpv' 'fzf' 'parallel' 'curl' 'lynx' 'peerflix')
-optdepends=('vlc: For streaming with VLC instead of MPV')
-source=("https://gist.githubusercontent.com/mtshrmn/4c418ac5f6a3806acfb83e6ede0900b4/raw/a5091804c136116b2d0a62263f3897b94b21732f/nyaflix.sh")
-sha256sums=('ed5c9f9dd040eb0cfe3aa18136fc92e1b5b2226f4c62d7057bb99c0d5972b9cb')
+pkgdesc="Stream anime from the command line"
+arch=('any')
+depends=('fzf' 'lynx' 'curl' 'peerflix' 'mpv' 'parallel')
+optdepends=('noto-fonts-cjk: Chinese, Japanese, and Korean character support'
+            'vlc: Use VLC as a media player instead of mpv')
+license=('GPL')
+url="https://github.com/mtshrmn/nyaflix"
+source=("git+https://github.com/mtshrmn/nyaflix.git")
+md5sums=('SKIP')
+provides=("$pkgname")
+
+build() {
+  cd "$srcdir/$pkgname"
+  chmod +x nyaflix
+}
 
 package() {
-    install -Dm755 "$srcdir/nyaflix.sh" "$pkgdir/usr/bin/nyaflix"
+  cd "$srcdir/$pkgname"
+  install -Dm755 nyaflix "$pkgdir/usr/bin/nyaflix"
+  install -Dm644 man/nyaflix.1 "$pkgdir/usr/share/man/man1/nyaflix.1"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
 }
